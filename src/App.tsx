@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { CalendarPlus, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -73,28 +73,105 @@ const StandingDiya = ({ className }: { className?: string }) => (
   </div>
 );
 
+const NilavilakkuMotif = () => (
+  <svg viewBox="0 0 100 150" className="w-10 h-16 md:w-12 md:h-20 text-brass drop-shadow-sm" fill="currentColor">
+    {/* Base */}
+    <path d="M 30 140 C 30 130, 45 125, 45 125 L 45 120 C 30 120, 20 115, 20 115 L 80 115 C 80 115, 70 120, 55 120 L 55 125 C 55 125, 70 130, 70 140 L 85 145 L 15 145 Z" />
+    {/* Stem */}
+    <rect x="46" y="55" width="8" height="60" />
+    {/* Decorative rings on stem */}
+    <rect x="42" y="65" width="16" height="4" rx="2" />
+    <rect x="42" y="85" width="16" height="4" rx="2" />
+    <rect x="44" y="100" width="12" height="4" rx="2" />
+    {/* Top tray */}
+    <path d="M 20 50 C 20 65, 45 60, 45 60 L 55 60 C 55 60, 80 65, 80 50 Z" />
+    {/* Top center piece */}
+    <path d="M 46 48 L 50 25 L 54 48 Z" />
+    {/* Base detail */}
+    <path d="M 35 140 H 65 V 142 H 35 Z" fill="var(--color-marigold-dark)" />
+    
+    {/* Flames */}
+    <path d="M 50 22 C 48 18, 50 10, 50 10 C 50 10, 52 18, 50 22 Z" fill="#F59E0B" className="opacity-90" />
+    <path d="M 25 48 C 23 44, 25 36, 25 36 C 25 36, 27 44, 25 48 Z" fill="#F59E0B" className="opacity-80" />
+    <path d="M 75 48 C 73 44, 75 36, 75 36 C 75 36, 77 44, 75 48 Z" fill="#F59E0B" className="opacity-80" />
+    <path d="M 38 51 C 36 47, 38 39, 38 39 C 38 39, 40 47, 38 51 Z" fill="#F59E0B" className="opacity-70" />
+    <path d="M 62 51 C 60 47, 62 39, 62 39 C 62 39, 64 47, 62 51 Z" fill="#F59E0B" className="opacity-70" />
+  </svg>
+);
+
+const MandalaBackground = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-[0.03]">
+    <svg viewBox="0 0 200 200" className="w-[150vw] h-[150vw] md:w-[100vw] md:h-[100vw] max-w-[900px] max-h-[900px] text-brass animate-spin-slow" stroke="currentColor" fill="none" strokeWidth="0.5">
+      <circle cx="100" cy="100" r="95" />
+      <circle cx="100" cy="100" r="80" strokeWidth="1" strokeDasharray="3 4" />
+      <circle cx="100" cy="100" r="65" />
+      <circle cx="100" cy="100" r="45" strokeDasharray="1 3" />
+      
+      {/* Outer Petals */}
+      {[...Array(16)].map((_, i) => (
+        <g key={i} transform={`rotate(${i * 22.5} 100 100)`}>
+          <path d="M 100 100 Q 115 35 100 5 Z" strokeWidth="0.5" fill="currentColor" fillOpacity="0.05" />
+          <path d="M 100 100 Q 108 55 100 20 Z" strokeWidth="0.5" />
+          <circle cx="100" cy="12" r="1.5" fill="currentColor" />
+        </g>
+      ))}
+      
+      {/* Inner Petals */}
+      {[...Array(8)].map((_, i) => (
+        <g key={`inner-${i}`} transform={`rotate(${i * 45} 100 100)`}>
+          <path d="M 100 100 Q 110 65 100 35 Z" fill="currentColor" fillOpacity="0.1" />
+        </g>
+      ))}
+      
+      {/* Center Motif */}
+      <circle cx="100" cy="100" r="15" />
+      {[...Array(8)].map((_, i) => (
+        <g key={`center-${i}`} transform={`rotate(${i * 45} 100 100)`}>
+          <path d="M 100 100 Q 104 90 100 85 Z" />
+        </g>
+      ))}
+    </svg>
+  </div>
+);
+
 const LotusFlower = ({ className, delay = 0 }: { className?: string, delay?: number }) => (
   <motion.svg 
-    viewBox="0 0 100 80" 
+    viewBox="0 0 100 100" 
     className={className}
     animate={{ y: [0, -5, 0] }}
     transition={{ duration: 4, repeat: Infinity, delay, ease: "easeInOut" }}
   >
-    <path d="M50 80 C 40 60, 20 40, 0 30 C 20 20, 40 40, 50 60 C 60 40, 80 20, 100 30 C 80 40, 60 60, 50 80 Z" fill="url(#lotusBase)" />
-    <path d="M50 80 C 45 50, 30 20, 20 10 C 35 15, 45 40, 50 70 C 55 40, 65 15, 80 10 C 70 20, 55 50, 50 80 Z" fill="url(#lotusMid)" />
-    <path d="M50 80 C 48 40, 40 10, 45 0 C 50 20, 50 60, 50 80 C 50 60, 50 20, 55 0 C 60 10, 52 40, 50 80 Z" fill="url(#lotusTop)" />
+    {/* Outer wide petals */}
+    <path d="M 50 85 C 20 85, 5 55, 10 40 C 20 50, 35 70, 50 85 Z" fill="url(#lotusPinkDark)" />
+    <path d="M 50 85 C 80 85, 95 55, 90 40 C 80 50, 65 70, 50 85 Z" fill="url(#lotusPinkDark)" />
+
+    {/* Mid outer petals */}
+    <path d="M 50 85 C 30 85, 15 45, 20 25 C 30 40, 45 70, 50 85 Z" fill="url(#lotusPinkBase)" />
+    <path d="M 50 85 C 70 85, 85 45, 80 25 C 70 40, 55 70, 50 85 Z" fill="url(#lotusPinkBase)" />
+
+    {/* Inner petals */}
+    <path d="M 50 85 C 40 85, 25 30, 35 15 C 45 35, 48 70, 50 85 Z" fill="url(#lotusPinkLight)" />
+    <path d="M 50 85 C 60 85, 75 30, 65 15 C 55 35, 52 70, 50 85 Z" fill="url(#lotusPinkLight)" />
+
+    {/* Center petal */}
+    <path d="M 50 85 C 45 80, 42 20, 50 5 C 58 20, 55 80, 50 85 Z" fill="url(#lotusPinkCenter)" />
+    
     <defs>
-      <linearGradient id="lotusBase" x1="0" y1="1" x2="0" y2="0">
-        <stop offset="0%" stopColor="#9d174d" />
-        <stop offset="100%" stopColor="#fbcfe8" />
-      </linearGradient>
-      <linearGradient id="lotusMid" x1="0" y1="1" x2="0" y2="0">
+      <linearGradient id="lotusPinkDark" x1="0" y1="1" x2="0" y2="0">
         <stop offset="0%" stopColor="#be185d" />
         <stop offset="100%" stopColor="#f472b6" />
       </linearGradient>
-      <linearGradient id="lotusTop" x1="0" y1="1" x2="0" y2="0">
-        <stop offset="0%" stopColor="#db2777" />
+      <linearGradient id="lotusPinkBase" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stopColor="#d946ef" />
+        <stop offset="100%" stopColor="#f9a8d4" />
+      </linearGradient>
+      <linearGradient id="lotusPinkLight" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stopColor="#f472b6" />
         <stop offset="100%" stopColor="#fdf2f8" />
+      </linearGradient>
+      <linearGradient id="lotusPinkCenter" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stopColor="#ec4899" />
+        <stop offset="100%" stopColor="#fff1f2" />
       </linearGradient>
     </defs>
   </motion.svg>
@@ -125,6 +202,37 @@ const AmbientPetal = ({ x, delay, duration, color }: { x: string, delay: number,
         delay
       }}
     />
+  );
+};
+
+const ScrollProgressBorders = () => {
+  const { scrollYProgress } = useScroll();
+  const yOffset = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  return (
+    <>
+      {/* Left moving border */}
+      <div className="fixed left-3 md:left-6 top-10 bottom-10 z-40 pointer-events-none flex flex-col items-center">
+         {/* The line that grows */}
+         <motion.div className="w-[1px] bg-gradient-to-b from-brass/50 via-brass/30 to-transparent origin-top" style={{ scaleY: scrollYProgress, height: '100%' }} />
+         {/* The travelling motif */}
+         <motion.div className="absolute top-0 text-brass opacity-80" style={{ top: yOffset }}>
+           <div className="-translate-y-1/2 -translate-x-1/2 absolute top-0 left-1/2 w-3 h-3 rotate-45 border border-brass flex items-center justify-center">
+             <div className="w-1 h-1 bg-brass-dark"></div>
+           </div>
+         </motion.div>
+      </div>
+
+      {/* Right moving border */}
+      <div className="fixed right-3 md:right-6 top-10 bottom-10 z-40 pointer-events-none flex flex-col items-center">
+         <motion.div className="w-[1px] bg-gradient-to-b from-brass/50 via-brass/30 to-transparent origin-top" style={{ scaleY: scrollYProgress, height: '100%' }} />
+         <motion.div className="absolute top-0 text-brass opacity-80" style={{ top: yOffset }}>
+           <div className="-translate-y-1/2 -translate-x-1/2 absolute top-0 left-1/2 w-3 h-3 rotate-45 border border-brass flex items-center justify-center">
+             <div className="w-1 h-1 bg-brass-dark"></div>
+           </div>
+         </motion.div>
+      </div>
+    </>
   );
 };
 
@@ -188,8 +296,17 @@ export default function App() {
                initial={{ scale: 0.5, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
                transition={{ duration: 2, ease: [0.2, 0.8, 0.2, 1] }}
+               className="flex flex-col items-center"
             >
-               <LotusFlower className="w-32 h-32 md:w-48 md:h-48 drop-shadow-2xl" />
+               <LotusFlower className="w-32 h-32 md:w-48 md:h-48 drop-shadow-2xl mb-8" />
+               <motion.div
+                 initial={{ opacity: 0, y: 5 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ delay: 0.8, duration: 1 }}
+                 className="text-brass-dark font-sans tracking-[0.25em] text-[0.65rem] md:text-xs uppercase font-bold text-center mb-4"
+               >
+                 Together with our loved ones
+               </motion.div>
             </motion.div>
 
             <motion.div
@@ -207,34 +324,20 @@ export default function App() {
 
       <div className="min-h-screen bg-watercolor-bg relative overflow-hidden flex flex-col items-center justify-center selection:bg-brass selection:text-white pb-12 pt-6 md:py-16 px-4">
         
-        {/* Soft Background Radial */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#fff_0%,_transparent_80%)] opacity-60 z-0 pointer-events-none fixed"></div>
+        {/* Subtle Rotating Mandala Background */}
+        <MandalaBackground />
 
-        {/* Decorative Frame */}
-        {introDone && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 3, delay: 0.5 }}
-            className="fixed inset-3 md:inset-5 z-40 pointer-events-none"
-          >
-             {/* Outer Border */}
-             <div className="absolute inset-0 border-[0.5px] border-brass/50 rounded-t-[100px] rounded-b-md"></div>
-             {/* Middle Border */}
-             <div className="absolute inset-1.5 border-[0.5px] border-brass/30 rounded-t-[94px] rounded-b-sm"></div>
-             {/* Inner Border */}
-             <div className="absolute inset-3 border-[0.5px] border-brass/10 rounded-t-[88px] rounded-b-[2px]"></div>
-          </motion.div>
-        )}
+        {/* Moving Scroll Borders */}
+        {introDone && <ScrollProgressBorders />}
 
         {/* Banana Leaves in Corners */}
         {introDone && (
           <>
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 2, delay: 0.5 }} className="absolute -top-10 -left-10 md:top-0 md:left-0 z-10 origin-top-left -rotate-12 pointer-events-none">
-              <BananaLeaf className="w-48 h-64 md:w-64 md:h-96 opacity-90 sepia-[0.3]" />
+              <BananaLeaf className="w-40 h-56 md:w-56 md:h-80 opacity-90 sepia-[0.3]" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 2, delay: 0.8 }} className="absolute -bottom-10 -right-10 md:-bottom-20 md:-right-20 z-10 origin-bottom-right shadow-xl pointer-events-none rotate-[160deg]">
-              <BananaLeaf className="w-48 h-64 md:w-72 md:h-[400px] opacity-90 sepia-[0.3]" />
+              <BananaLeaf className="w-40 h-56 md:w-64 md:h-[320px] opacity-90 sepia-[0.3]" />
             </motion.div>
           </>
         )}
@@ -243,13 +346,13 @@ export default function App() {
         {introDone && (
           <>
             <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, delay: 1 }} className="absolute top-0 right-10 md:right-32 z-10">
-              <MarigoldGarland length={6} />
+              <MarigoldGarland length={4} />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, delay: 1.3 }} className="absolute top-0 right-2 md:right-16 z-10">
-              <MarigoldGarland length={8} />
+              <MarigoldGarland length={6} />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, delay: 1.5 }} className="absolute top-0 left-20 md:left-40 z-10">
-              <MarigoldGarland length={4} />
+              <MarigoldGarland length={3} />
             </motion.div>
           </>
         )}
@@ -258,15 +361,15 @@ export default function App() {
         {introDone && (
           <div className="absolute bottom-6 md:bottom-12 flex justify-between w-full px-8 md:px-32 z-10 items-end pointer-events-none">
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 1.5 }}>
-               <StandingDiya className="opacity-90" />
+               <StandingDiya className="opacity-90 scale-75 md:scale-90 transform-origin-bottom" />
              </motion.div>
              <div className="flex gap-4">
-               <LotusFlower className="w-16 h-16 opacity-80" delay={0} />
-               <LotusFlower className="w-24 h-24 opacity-90 z-20 translate-y-2" delay={1} />
-               <LotusFlower className="w-16 h-16 opacity-80" delay={2} />
+               <LotusFlower className="w-12 h-12 opacity-80" delay={0} />
+               <LotusFlower className="w-16 h-16 opacity-90 z-20 translate-y-1" delay={1} />
+               <LotusFlower className="w-12 h-12 opacity-80" delay={2} />
              </div>
              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 1.8 }}>
-               <StandingDiya className="opacity-90" />
+               <StandingDiya className="opacity-90 scale-75 md:scale-90 transform-origin-bottom" />
              </motion.div>
           </div>
         )}
@@ -282,14 +385,18 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-            className="w-full max-w-[480px] z-20 relative pt-12 md:pt-0"
+            className="w-full max-w-[480px] z-20 relative pt-4 md:-mt-12"
           >
-            <div className="text-center relative z-10 flex flex-col items-center justify-center pt-8 pb-32">
+            <div className="text-center relative z-10 flex flex-col items-center justify-center pt-8 md:pt-10 pb-24 px-4">
               
               <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col items-center w-full">
                 
-                <motion.h4 variants={item} className="text-xs md:text-sm tracking-[0.25em] font-sans text-earth-text mb-6 font-bold uppercase text-center w-full drop-shadow-sm">
-                  With the blessings of our families
+                <motion.div variants={item} className="flex flex-col items-center w-full mb-10">
+                  <NilavilakkuMotif />
+                </motion.div>
+
+                <motion.h4 variants={item} className="text-xs md:text-sm tracking-[0.25em] font-sans text-earth-text mb-8 font-bold uppercase text-center w-full drop-shadow-sm leading-relaxed max-w-[80%]">
+                  Together with our loved ones
                 </motion.h4>
                 
                 <motion.div variants={item} className="flex flex-col items-center space-y-2 w-full mt-8 md:mt-12">
@@ -307,7 +414,7 @@ export default function App() {
                 <motion.div variants={item} className="w-full flex flex-col items-center mt-6 mb-12">
                   <GoldDivider />
                   <p className="font-serif italic text-lg md:text-xl text-earth-text/90 mb-4 px-6 leading-relaxed">
-                    I joyfully invite you to celebrate my wedding ceremony.
+                    We cordially invite you to grace our wedding celebration.
                   </p>
                   <p className="font-sans text-[0.65rem] tracking-[0.2em] uppercase text-brass-dark font-bold leading-relaxed px-4 text-center">
                     Your presence would mean the world to us
