@@ -112,7 +112,7 @@ const AmbientPetal = ({ x, delay, duration, color }: { x: string, delay: number,
   return (
     <motion.div
       className={`absolute top-[-5%] z-20 pointer-events-none rounded-[50%_0_50%_50%] ${color} opacity-60 backdrop-blur-sm drop-shadow-sm`}
-      style={{ left: x, width: 12, height: 12 }}
+      style={{ left: x, width: 12, height: 12, willChange: 'transform' }}
       animate={{ 
         y: ['0vh', '110vh'],
         x: [0, Math.random() * 60 - 30, Math.random() * 60 - 30, 0],
@@ -143,7 +143,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const newPetals = Array.from({length: 20}).map((_, i) => ({
+    const petalCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 15;
+    const newPetals = Array.from({length: petalCount}).map((_, i) => ({
       id: i,
       x: `${Math.random() * 100}%`,
       delay: Math.random() * 8,
@@ -163,18 +164,19 @@ export default function App() {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
     }
   };
 
   const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.25, 0.46, 0.45, 0.94] } }
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] } }
   };
 
   return (
     <>
       <AnimatePresence>
+        <div className="paper-texture"></div>
         {!introDone && (
           <motion.div
             key="intro"
@@ -206,14 +208,23 @@ export default function App() {
       <div className="min-h-screen bg-watercolor-bg relative overflow-hidden flex flex-col items-center justify-center selection:bg-brass selection:text-white pb-12 pt-6 md:py-16 px-4">
         
         {/* Soft Background Radial */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#fff_0%,_transparent_80%)] opacity-60 z-0 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#fff_0%,_transparent_80%)] opacity-60 z-0 pointer-events-none fixed"></div>
 
         {/* Decorative Frame */}
         {introDone && (
-          <div className="absolute inset-4 md:inset-8 border-[1.5px] border-brass/30 rounded-t-[100px] rounded-b-sm pointer-events-none z-0">
-             {/* Inner frame */}
-             <div className="absolute inset-2 border border-brass/15 rounded-t-[90px] rounded-b-sm"></div>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 3, delay: 0.5 }}
+            className="fixed inset-3 md:inset-5 z-40 pointer-events-none"
+          >
+             {/* Outer Border */}
+             <div className="absolute inset-0 border-[0.5px] border-brass/50 rounded-t-[100px] rounded-b-md"></div>
+             {/* Middle Border */}
+             <div className="absolute inset-1.5 border-[0.5px] border-brass/30 rounded-t-[94px] rounded-b-sm"></div>
+             {/* Inner Border */}
+             <div className="absolute inset-3 border-[0.5px] border-brass/10 rounded-t-[88px] rounded-b-[2px]"></div>
+          </motion.div>
         )}
 
         {/* Banana Leaves in Corners */}
@@ -281,19 +292,19 @@ export default function App() {
                   With the blessings of our families
                 </motion.h4>
                 
-                <motion.div variants={item} className="flex flex-col items-center space-y-2 w-full mt-2">
-                   <h1 className="font-script text-7xl md:text-8xl text-marigold-dark drop-shadow-sm font-medium">
+                <motion.div variants={item} className="flex flex-col items-center space-y-2 w-full mt-8 md:mt-12">
+                   <h1 className="font-script text-7xl md:text-8xl text-marigold-dark drop-shadow-sm font-medium gold-shimmer-text">
                     Athira
                   </h1>
                   <span className="text-2xl md:text-3xl text-brass-dark font-serif italic relative top-[-5px]">
                     &
                   </span>
-                  <h1 className="font-script text-7xl md:text-8xl text-marigold-dark drop-shadow-sm font-medium relative top-[-15px]">
+                  <h1 className="font-script text-7xl md:text-8xl text-marigold-dark drop-shadow-sm font-medium relative top-[-15px] gold-shimmer-text tracking-wider">
                     Adhin
                   </h1>
                 </motion.div>
 
-                <motion.div variants={item} className="w-full flex flex-col items-center mt-2 mb-6">
+                <motion.div variants={item} className="w-full flex flex-col items-center mt-6 mb-12">
                   <GoldDivider />
                   <p className="font-serif italic text-lg md:text-xl text-earth-text/90 mb-4 px-6 leading-relaxed">
                     I joyfully invite you to celebrate my wedding ceremony.
@@ -303,24 +314,37 @@ export default function App() {
                   </p>
                 </motion.div>
 
-                <motion.div variants={item} className="flex flex-col items-center w-full mb-8 text-earth-text">
-                  <div className="flex flex-col space-y-1 w-full text-center group transition-all duration-300">
+                <motion.div 
+                  initial="hidden" 
+                  whileInView="show" 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  variants={container} 
+                  className="flex flex-col items-center w-full mb-16 text-earth-text mt-8"
+                >
+                  <motion.div variants={item} className="flex flex-col space-y-1 w-full text-center group transition-all duration-300">
                     <div className="font-sans uppercase tracking-[0.15em] text-[0.65rem] text-brass-dark font-bold mb-1">Muhurtham</div>
                     <div className="font-serif text-[1.3rem] font-bold tracking-wide">Sunday, 13th Sep 2026</div>
                     <div className="font-sans text-xs tracking-widest text-earth-text/70 pt-1 font-medium">10:00 AM — 10:45 AM</div>
-                  </div>
+                  </motion.div>
                   
-                  <div className="w-8 h-[1px] bg-brass/40 my-5"></div>
+                  <motion.div variants={item} className="w-8 h-[1px] bg-brass/40 my-8"></motion.div>
                   
-                  <div className="flex flex-col space-y-1 w-full text-center">
+                  <motion.div variants={item} className="flex flex-col space-y-1 w-full text-center">
                     <div className="font-sans uppercase tracking-[0.15em] text-[0.65rem] text-brass-dark font-bold mb-1">Venue</div>
                     <div className="font-serif text-[1.2rem] font-bold tracking-wide">Bride's House</div>
-                    <div className="font-sans text-[0.7rem] uppercase tracking-wider text-earth-text/70 font-medium pb-1 mt-1">Talap, Kannur</div>
-                  </div>
+                    <div className="font-sans text-[0.7rem] uppercase tracking-wider text-earth-text/70 font-medium pb-1 mt-1 leading-relaxed">Talap, <br/> Kannur</div>
+                  </motion.div>
                 </motion.div>
 
-                <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 w-full justify-center px-4 max-w-sm mt-2">
-                  <a 
+                <motion.div 
+                  initial="hidden" 
+                  whileInView="show" 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  variants={container} 
+                  className="flex flex-col sm:flex-row gap-4 w-full justify-center px-4 max-w-sm mt-8"
+                >
+                  <motion.a 
+                    variants={item}
                     href={calendarLink} 
                     target="_blank" 
                     rel="noopener noreferrer" 
@@ -331,8 +355,9 @@ export default function App() {
                       <span className="font-sans text-[0.65rem] font-bold uppercase tracking-widest text-earth-text">Save Date</span>
                       <span className="font-sans text-[0.55rem] text-earth-text/60 font-medium uppercase tracking-widest mt-0.5">Add to Calendar</span>
                     </div>
-                  </a>
-                  <a 
+                  </motion.a>
+                  <motion.a 
+                    variants={item}
                     href={mapsLink} 
                     target="_blank" 
                     rel="noopener noreferrer" 
@@ -343,14 +368,20 @@ export default function App() {
                       <span className="font-sans text-[0.65rem] font-bold uppercase tracking-widest text-white">Directions</span>
                       <span className="font-sans text-[0.55rem] text-white/80 font-medium uppercase tracking-widest mt-0.5">View on Maps</span>
                     </div>
-                  </a>
+                  </motion.a>
                 </motion.div>
 
-                <motion.div variants={item} className="mt-10 flex flex-col items-center w-full">
-                  <p className="font-script text-3xl md:text-4xl text-brass-dark mb-2">
+                <motion.div 
+                  initial="hidden" 
+                  whileInView="show" 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  variants={container} 
+                  className="mt-24 mb-16 flex flex-col items-center w-full"
+                >
+                  <motion.p variants={item} className="font-script text-4xl md:text-5xl text-brass-dark mb-4 gold-shimmer-text">
                     With Gratitude
-                  </p>
-                  <p className="font-sans text-[0.65rem] tracking-[0.25em] uppercase text-earth-text/70 font-bold">Athira & Adhin</p>
+                  </motion.p>
+                  <motion.p variants={item} className="font-sans text-[0.65rem] tracking-[0.25em] uppercase text-earth-text/70 font-bold">Athira & Adhin</motion.p>
                 </motion.div>
 
               </motion.div>
