@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-script: "Great Vibes", cursive;
+  --font-serif: "Cinzel", serif;
+  --font-sans: "Montserrat", sans-serif;
+  --color-vedic-red: #8B0000;
+  --color-vedic-orange: #d35400;
+  --color-vedic-gold: #D4AF37;
+  --color-vedic-light-gold: #F9E79F;
+  --color-vedic-cream: #FFF8E7;
+  --color-vedic-maroon: #4a0404;
+}
+
+body {
+  background-color: var(--color-vedic-cream);
+}
