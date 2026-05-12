@@ -136,6 +136,13 @@ export default function App() {
   const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
+    // Append beautiful wedding emojis to the URL path for that extra touch
+    if (window.location.pathname === '/') {
+      window.history.replaceState(null, '', '/💍✨');
+    }
+  }, []);
+
+  useEffect(() => {
     const newPetals = Array.from({length: 20}).map((_, i) => ({
       id: i,
       x: `${Math.random() * 100}%`,
