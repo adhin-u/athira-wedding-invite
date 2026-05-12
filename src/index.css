@@ -1,18 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-script: "Great Vibes", cursive;
-  --font-serif: "Cinzel", serif;
-  --font-sans: "Montserrat", sans-serif;
-  --color-vedic-red: #8B0000;
-  --color-vedic-orange: #d35400;
-  --color-vedic-gold: #D4AF37;
-  --color-vedic-light-gold: #F9E79F;
-  --color-vedic-cream: #FFF8E7;
-  --color-vedic-maroon: #4a0404;
+  --font-script: "Alex Brush", cursive;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Jost", sans-serif;
+  
+  --color-emerald-deep: #022c22;
+  --color-emerald-mid: #064e3b;
+  --color-gold-main: #D4AF37;
+  --color-gold-light: #FDE08B;
+  --color-gold-dark: #b49020;
+  --color-ivory: #FDFBF7;
+  --color-blush: #fce7f3;
+  --color-lotus: #db2777;
 }
 
 body {
-  background-color: var(--color-vedic-cream);
+  background-color: var(--color-emerald-deep);
+  color: var(--color-ivory);
 }
