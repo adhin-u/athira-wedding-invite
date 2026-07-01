@@ -238,7 +238,7 @@ const ScrollProgressBorders = () => {
 
 export default function App() {
   const calendarLink = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+Ceremony&dates=20260913T043000Z/20260913T051500Z&details=Join+us+as+we+celebrate+the+wedding+ceremony.&location=Talap,+Kannur,+Kerala,+India";
-  const mapsLink = "https://www.google.com/maps/search/?api=1&query=Talap,+Kannur";
+  const mapsLink = "https://maps.app.goo.gl/2QwJwrw4cpmYJY8W9";
   
   const [petals, setPetals] = useState<Array<any>>([]);
   const [introDone, setIntroDone] = useState(false);
